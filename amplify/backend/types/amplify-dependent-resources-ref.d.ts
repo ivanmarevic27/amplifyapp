@@ -18,9 +18,23 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "storage": {
-        "amplifyApp1950th": {
-            "BucketName": "string",
+        "dynamoab3221ea": {
+            "Name": "string",
+            "Arn": "string",
+            "StreamArn": "string",
+            "PartitionKeyName": "string",
+            "PartitionKeyType": "string",
+            "SortKeyName": "string",
+            "SortKeyType": "string",
             "Region": "string"
+        }
+    },
+    "function": {
+        "amplifyappeee56a1e": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     }
 }

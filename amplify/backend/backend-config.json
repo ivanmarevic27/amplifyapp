@@ -43,10 +43,26 @@
     }
   },
   "storage": {
-    "amplifyApp1950th": {
-      "service": "S3",
+    "dynamoab3221ea": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "function": {
+    "amplifyappeee56a1e": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "amplifyapp",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,14 @@
+{
+  "resourceName": "dynamoab3221ea",
+  "tableName": "dynamoab3221ea",
+  "partitionKey": {
+    "fieldName": "name",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "price",
+    "fieldType": "number"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

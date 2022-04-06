@@ -10,9 +10,17 @@ type Todo @model {
   value: String
 }
 
-type Note @model {
+type Study @model {
   id: ID!
   name: String!
+  startDate: String!
+  notes: [Note] @hasMany(indexName: "byStudy", fields: ["id"])
+}
+
+type Note @model {
+  id: ID!
+  studyId: ID! @index(name: "byStudy", sortKeyFields: ["name"])
+  name: String!
   description: String
-  image: String
+  study: Study @belongsTo(fields: ["studyId"])
 }

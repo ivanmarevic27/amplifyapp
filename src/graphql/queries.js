@@ -7,6 +7,7 @@ export const getTodo = /* GraphQL */ `
       id
       name
       description
+      value
       createdAt
       updatedAt
     }
@@ -23,6 +24,50 @@ export const listTodos = /* GraphQL */ `
         id
         name
         description
+        value
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getStudy = /* GraphQL */ `
+  query GetStudy($id: ID!) {
+    getStudy(id: $id) {
+      id
+      name
+      startDate
+      notes {
+        items {
+          id
+          studyId
+          name
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listStudies = /* GraphQL */ `
+  query ListStudies(
+    $filter: ModelStudyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listStudies(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        startDate
+        notes {
+          nextToken
+        }
         createdAt
         updatedAt
       }
@@ -34,9 +79,19 @@ export const getNote = /* GraphQL */ `
   query GetNote($id: ID!) {
     getNote(id: $id) {
       id
+      studyId
       name
       description
-      image
+      study {
+        id
+        name
+        startDate
+        notes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -51,9 +106,16 @@ export const listNotes = /* GraphQL */ `
     listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        studyId
         name
         description
-        image
+        study {
+          id
+          name
+          startDate
+          createdAt
+          updatedAt
+        }
         createdAt
         updatedAt
       }

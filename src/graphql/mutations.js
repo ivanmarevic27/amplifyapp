@@ -10,6 +10,7 @@ export const createTodo = /* GraphQL */ `
       id
       name
       description
+      value
       createdAt
       updatedAt
     }
@@ -24,6 +25,7 @@ export const updateTodo = /* GraphQL */ `
       id
       name
       description
+      value
       createdAt
       updatedAt
     }
@@ -38,6 +40,82 @@ export const deleteTodo = /* GraphQL */ `
       id
       name
       description
+      value
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createStudy = /* GraphQL */ `
+  mutation CreateStudy(
+    $input: CreateStudyInput!
+    $condition: ModelStudyConditionInput
+  ) {
+    createStudy(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      notes {
+        items {
+          id
+          studyId
+          name
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateStudy = /* GraphQL */ `
+  mutation UpdateStudy(
+    $input: UpdateStudyInput!
+    $condition: ModelStudyConditionInput
+  ) {
+    updateStudy(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      notes {
+        items {
+          id
+          studyId
+          name
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteStudy = /* GraphQL */ `
+  mutation DeleteStudy(
+    $input: DeleteStudyInput!
+    $condition: ModelStudyConditionInput
+  ) {
+    deleteStudy(input: $input, condition: $condition) {
+      id
+      name
+      startDate
+      notes {
+        items {
+          id
+          studyId
+          name
+          description
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -50,9 +128,19 @@ export const createNote = /* GraphQL */ `
   ) {
     createNote(input: $input, condition: $condition) {
       id
+      studyId
       name
       description
-      image
+      study {
+        id
+        name
+        startDate
+        notes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -65,9 +153,19 @@ export const updateNote = /* GraphQL */ `
   ) {
     updateNote(input: $input, condition: $condition) {
       id
+      studyId
       name
       description
-      image
+      study {
+        id
+        name
+        startDate
+        notes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -80,9 +178,19 @@ export const deleteNote = /* GraphQL */ `
   ) {
     deleteNote(input: $input, condition: $condition) {
       id
+      studyId
       name
       description
-      image
+      study {
+        id
+        name
+        startDate
+        notes {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
