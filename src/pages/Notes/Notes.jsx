@@ -21,7 +21,9 @@ export const Notes = () => {
   async function fetchNotes() {
     try {
       const notesFromAPI = await fetchListItems(listNotes, 'listNotes');
-      setNotes(notesFromAPI);
+      if (notesFromAPI != null) {
+        setNotes(notesFromAPI);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +32,9 @@ export const Notes = () => {
   async function fetchStudies() {
     try {
       const studiesFromAPI = await fetchListItems(listStudies, 'listStudies');
-      setStudies(studiesFromAPI);
+      if (studiesFromAPI != null) {
+        setStudies(studiesFromAPI);
+      }
     } catch (error) {
       console.log(error);
     }
