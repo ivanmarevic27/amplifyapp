@@ -1,26 +1,98 @@
-# This "input" configures a global authorization rule to enable public access to
-# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY {
-  globalAuthRule: AuthRule = { allow: public }
-} # FOR TESTING ONLY!
-type Todo @model {
+type TestType
+  @model
+  @key(name: "byType", fields: ["typeName"], queryField: "getTestTypeByName")
+  @auth(rules: [{ allow: public }]) {
   id: ID!
-  name: String!
+  typeName: String!
   description: String
-  value: String
+  testUnitID: ID!
+  testUnit: TestUnit! @connection(fields: ["testUnitID"])
 }
 
-type Study @model {
+type TestUnit
+  @model
+  @key(name: "byUnit", fields: ["unitName"], queryField: "getTestUnitByName")
+  @auth(rules: [{ allow: public }]) {
   id: ID!
-  name: String!
-  startDate: String!
-  notes: [Note] @hasMany(indexName: "byStudy", fields: ["id"])
+  unitName: String!
+  testUnitTestResults: [TestUnitTestResult] @connection(keyName: "byTestUnit", fields: ["id"])
 }
 
-type Note @model {
+type Test
+  @model
+  @key(name: "byType", fields: ["typeID", "testName"], queryField: "getTestsByType")
+  @key(name: "byName", fields: ["testName"], queryField: "getTestByName")
+  @key(name: "byNameSearch", fields: ["dataType"], queryField: "searchTestsByName")
+  @key(name: "byYear", fields: ["year"], queryField: "getTestsByYear")
+  @key(name: "byNameSorted", fields: ["dataType", "testName"], queryField: "getTestsSortedByName")
+  @auth(rules: [{ allow: public }]) {
   id: ID!
-  studyId: ID! @index(name: "byStudy", sortKeyFields: ["name"])
-  name: String!
-  description: String
-  study: Study @belongsTo(fields: ["studyId"])
+  dataType: String!
+  typeID: ID!
+  testType: TestType! @connection(fields: ["typeID"])
+  testName: String!
+  year: Int
+  nationalMean: Float
+  isRandomOrder: Boolean
+  isSortedByComplexity: Boolean
+  testUnitID: ID!
+  testUnit: TestUnit! @connection(fields: ["testUnitID"])
+  testUploads: [TestUpload] @connection(keyName: "byTest", fields: ["id"])
+  thresholds: [Threshold] @connection(keyName: "byTest", fields: ["id"])
+}
+
+type TestResult
+  @model
+  @key(name: "byTest", fields: ["testID", "testDate"], queryField: "getTestResultsByTest")
+  @key(name: "byTestUpload", fields: ["testUploadID"], queryField: "getTestResultsByTestUpload")
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  testID: ID!
+  test: Test @connection(fields: ["testID"])
+  testDate: AWSDate!
+  completedDate: String!
+  typeID: ID!
+  testType: TestType! @connection(fields: ["typeID"])
+  schoolYear: Int!
+  nationalBand: String
+  minStandard: String
+  level: String
+  testUploadID: ID!
+  testUpload: TestUpload! @connection(fields: ["testUploadID"])
+  testUnitTestResults: [TestUnitTestResult] @connection(keyName: "byTestResult", fields: ["id"])
+}
+
+type TestUpload
+  @model
+  @key(name: "byTest", fields: ["testID"], queryField: "getTestUploadByTest")
+  @key(name: "bySchoolYear", fields: ["schoolYear", "testDate"], queryField: "getTestUploadsByYear")
+  @key(name: "byTypeByYear", fields: ["typeID", "schoolYear"], queryField: "getTestUploadsByTypeByYear")
+  @auth(rules: [{ allow: public }]) {
+  id: ID!
+  testDate: AWSDate!
+  testID: ID!
+  test: Test! @connection(fields: ["testID"])
+  typeID: ID!
+  testType: TestType! @connection(fields: ["typeID"])
+  schoolYear: Int!
+  testResults: [TestResult] @connection(keyName: "byTestUpload", fields: ["id"])
+}
+
+type TestUnitTestResult
+  @model
+  @key(name: "byTestResult", fields: ["testResultID", "testUnitID"])
+  @key(name: "byTestUnit", fields: ["testUnitID", "testResultID"]) {
+  id: ID!
+  testUnitID: ID!
+  testUnit: TestUnit! @connection(fields: ["testUnitID"])
+  testResultID: ID!
+  testResult: TestResult! @connection(fields: ["testResultID"])
+}
+
+type Threshold @model @key(name: "byTest", fields: ["testID"]) {
+  id: ID!
+  testID: ID!
+  test: Test @connection(fields: ["testID"])
+  scaledBottom: String!
+  scaledTop: String!
 }
